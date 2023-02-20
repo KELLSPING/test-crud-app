@@ -6,6 +6,8 @@
 
 - `npm start`
 
+- `npm i axios`
+
 ## Command used for Server side.
 
 - `npm install express body-parser mysql nodemon`
@@ -15,3 +17,5 @@
 - `npm rum devStart`
 
     (Using the nodemon.)
+
+- `npm install cors`
