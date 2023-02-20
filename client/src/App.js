@@ -6,6 +6,7 @@ function App() {
     const [movieName, setMovieName] = useState("");
     const [review, setReview] = useState("");
     const [movieList, setMovieList] = useState([]);
+    const [newReview, setNewReview] = useState("");
 
     useEffect(() => {
         Axios.get("http://localhost:3001/api/get").then((response) => {
@@ -18,9 +19,25 @@ function App() {
         Axios.post("http://localhost:3001/api/insert", {
             movieName: movieName,
             movieReview: review,
-        }).then(() => {
-            alert("successful insert");
         });
+
+        setMovieList([
+            ...movieList,
+            { movieName: movieName, movieReview: review },
+        ]);
+    };
+
+    const deleteReview = (movie) => {
+        Axios.delete(`http://localhost:3001/api/delete/${movie}`);
+    };
+
+    const updateReview = (movie) => {
+        Axios.put("http://localhost:3001/api/update", {
+            movieName: movie,
+            movieReview: newReview,
+        });
+
+        setNewReview("");
     };
 
     return (
@@ -49,10 +66,32 @@ function App() {
 
                 {movieList.map((val) => {
                     return (
-                        <h3>
-                            MovirName: {val.movieName}, MovieReview:{" "}
-                            {val.movieReview}
-                        </h3>
+                        <div className="card">
+                            <h2>{val.movieName}</h2>
+                            <p>{val.movieReview}</p>
+
+                            <button
+                                onClick={() => {
+                                    deleteReview(val.movieName);
+                                }}
+                            >
+                                Delete
+                            </button>
+                            <input
+                                type="text"
+                                id="updateInput"
+                                onChange={(e) => {
+                                    setNewReview(e.target.value);
+                                }}
+                            />
+                            <button
+                                onClick={() => {
+                                    updateReview(val.movieName);
+                                }}
+                            >
+                                Update
+                            </button>
+                        </div> 
                     );
                 })}
             </div>
